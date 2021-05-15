@@ -3,8 +3,8 @@ import requests
 import time
 import urllib
 
-import config
 from dbhelper import DBHelper
+import bot_info
 
 #logging boilerplate
 import logging
@@ -26,8 +26,7 @@ logger.addHandler(ch)
 
 db = DBHelper()
 
-#TOKEN = "" #define token here as a string
-# TOKEN = config.token
+TOKEN = bot_info.token
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 
 
@@ -60,7 +59,6 @@ def get_last_update_id(updates):
 
 
 def handle_updates(updates,last_update_id):
-    import ipdb;ipdb.set_trace
     for update in updates["result"]:
         chat = update["message"]["chat"]["id"]
         if "text" in update["message"].keys():
@@ -86,7 +84,7 @@ def handle_updates(updates,last_update_id):
             if "left_chat_member" in update["message"].keys():
                 send_message("Aww {} sucks".format(update["message"]["left_chat_member"]["first_name"]),chat)
             elif "new_chat_member" in update["message"].keys():
-                send_message("Welcome to da club {} boi".format(update["message"]["new_chat_member"]["first_name"]),chat)
+                send_message("Welcome to da club boi {}".format(update["message"]["new_chat_member"]["first_name"]),chat)
             return 0
 
 def get_last_chat_id_and_text(updates):
@@ -109,8 +107,6 @@ def send_message(text, chat_id, reply_markup=None):
     if reply_markup:
         url += "&reply_markup={}".format(reply_markup)
     get_url(url)
-
-# import ipdb;ipdb.set_trace()
 
 def main():
     db.setup()

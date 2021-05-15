@@ -1,0 +1,5 @@
+*.pyc
+bot_info.py
+config.py
+*.sqlite
+*.DS_Store
